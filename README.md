@@ -4,19 +4,17 @@ Custom rate-limiter from scratch using a sliding-window algorithm built with Mic
 
 ### Prerequisites
 
-- Java 11 or higher
-- Maven
+- Java 8 or higher
+- Maven 3.3.9 or higher
 
 ### Building and running the application
 
 Use the following command to build and run the application
 ```
-./mvnw mn:run
+mvn mn:run
 ```
 
 By default, the application will run on port 8080.
-
----
 
 ## Micronaut
 
