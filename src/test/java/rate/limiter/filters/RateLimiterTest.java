@@ -1,9 +1,11 @@
 package rate.limiter.filters;
 
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class RateLimiterTest {
     @Test
@@ -11,9 +13,9 @@ public class RateLimiterTest {
         RateLimiter rateLimiter = new RateLimiter(10, 1, TimeUnit.MINUTES);
 
         for (int i = 0; i < 10; i++) {
-            Assert.assertTrue(rateLimiter.allow());
+            assertTrue(rateLimiter.allow());
         }
 
-        Assert.assertFalse(rateLimiter.allow());
+        assertFalse(rateLimiter.allow());
     }
 }
