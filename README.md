@@ -14,7 +14,19 @@ Use the following command to build and run the application
 mvn mn:run
 ```
 
-By default, the application will run on port 8080.
+By default, the application will run on port 8080. You can then use the following
+cURL request to test it out (default configuration is 10 max requests within a minute).
+
+```bash
+for i in {1..20}; do curl http://localhost:8080; done
+```
+
+### Testing
+
+Run tests with
+```
+mvn test
+```
 
 ## Micronaut
 
