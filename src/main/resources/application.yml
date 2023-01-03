@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: rateLimiter
+netty:
+  default:
+    allocator:
+      max-order: 3
