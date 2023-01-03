@@ -9,13 +9,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class RateLimiterTest {
     @Test
-    public void testAllow() {
-        RateLimiter rateLimiter = new RateLimiter(10, 1, TimeUnit.MINUTES);
+    public void testRateLimiter() {
+        RateLimiter limiter = new RateLimiter(10, 1, TimeUnit.MINUTES);
 
         for (int i = 0; i < 10; i++) {
-            assertTrue(rateLimiter.allow());
+            // First 10 requests should be allowed
+            assertTrue(limiter.allow("1.2.3.4"));
         }
 
-        assertFalse(rateLimiter.allow());
+        // Next request should be blocked
+        assertFalse(limiter.allow("1.2.3.4"));
+
+        // Request from other IP should be allowed
+        assertTrue(limiter.allow("5.6.7.8"));
     }
 }

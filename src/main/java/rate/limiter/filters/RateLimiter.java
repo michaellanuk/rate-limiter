@@ -1,32 +1,37 @@
 package rate.limiter.filters;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class RateLimiter {
     private final long maxRequests;
     private final long duration;
     private final TimeUnit timeUnit;
-    private long startTime;
-    private long requests;
+    private final ConcurrentHashMap<String, Long> startTimes;
+    private final ConcurrentHashMap<String, Long> requests;
 
     public RateLimiter(long maxRequests, long duration, TimeUnit timeUnit) {
         this.maxRequests = maxRequests;
         this.duration = duration;
         this.timeUnit = timeUnit;
-        this.startTime = System.nanoTime();
-        this.requests = 0;
+        this.startTimes = new ConcurrentHashMap<>();
+        this.requests = new ConcurrentHashMap<>();
     }
 
-    public boolean allow() {
-        long elapsedTime = timeUnit.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
+    public boolean allow(String ip) {
+        long elapsedTime = timeUnit.convert(
+                System.nanoTime() - startTimes.getOrDefault(ip, System.nanoTime()),
+                TimeUnit.NANOSECONDS
+        );
         if (elapsedTime > duration) {
-            requests = 1;
-            startTime = System.nanoTime();
+            requests.put(ip, 1L);
+            startTimes.put(ip, System.nanoTime());
             return true;
         }
 
-        requests++;
-        if (requests > maxRequests) {
+        long count = requests.getOrDefault(ip, 0L) + 1;
+        requests.put(ip, count);
+        if (count > maxRequests) {
             return false;
         }
 

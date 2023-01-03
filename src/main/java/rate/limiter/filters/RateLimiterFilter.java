@@ -13,6 +13,7 @@ import org.reactivestreams.Publisher;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.inject.Singleton;
+import rate.limiter.helpers.AddressResolver;
 
 import static io.micronaut.http.annotation.Filter.MATCH_ALL_PATTERN;
 
@@ -21,10 +22,12 @@ import static io.micronaut.http.annotation.Filter.MATCH_ALL_PATTERN;
 public class RateLimiterFilter implements HttpServerFilter {
     private final RateLimiter rateLimiter = new RateLimiter(10, 1, TimeUnit.MINUTES);
 
+    private final AddressResolver addressResolver = new AddressResolver();
+
 
     @Override
     public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
-        if (!rateLimiter.allow()) {
+        if (!rateLimiter.allow(addressResolver.resolve(request))) {
             return Publishers.just(HttpResponse.status(HttpStatus.TOO_MANY_REQUESTS).body("Too Many Requests"));
         }
 
