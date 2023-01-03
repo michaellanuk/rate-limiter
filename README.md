@@ -1,6 +1,6 @@
 ## Rate Limiter
 
-Custom rate-limiter from scratch using a sliding-window algorithm built with Micronaut.
+Custom rate-limiter from scratch using a sliding-window algorithm built with Micronaut. Limits by source IP.
 
 ### Prerequisites
 
