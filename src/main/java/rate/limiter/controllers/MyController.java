@@ -9,6 +9,6 @@ public class MyController {
 
     @Get(produces = MediaType.TEXT_PLAIN) // 
     public String index() {
-        return "Hello World"; // 
+        return "Hello from Rate Limiter API"; //
     }
 }
